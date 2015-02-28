@@ -1,5 +1,7 @@
 # The Chronology Project
 
+This repository began as a GitHub fork of [Locu/chronology](https://github.com/Locu/chronology).
+
 ## Introduction
 
 This repository contains three loosely coupled projects:
