@@ -1,5 +1,7 @@
 # The Chronology Project
 
+[![Gitter chat](https://badges.gitter.im/chronology/chronology.png)](https://gitter.im/chronology/chronology)
+
 This repository began as a GitHub fork of [Locu/chronology](https://github.com/Locu/chronology).
 
 ## Introduction
