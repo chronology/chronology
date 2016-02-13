@@ -203,10 +203,8 @@ def get_properties_accessed_by_value(value):
   return properties
 
 
-def cast_to_number(value, default=None):
-  for cast in (int, float):
-    try:
-      return cast(value)
-    except (TypeError, ValueError):
-      pass
-  return default
+def safe_float(value, default=None):
+  try:
+    return float(value)
+  except (TypeError, ValueError):
+    return default
