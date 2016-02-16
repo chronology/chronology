@@ -15,7 +15,7 @@
  *
  *
  * Structure of a query object:
- * 
+ *
  * query = {
  *   stream: <string>,
  *   steps: [<step>, <step>, ...]
@@ -29,7 +29,7 @@
  * stream name should be incorporated into a kstream access method operator.
  *
  * Sample operation:
- * 
+ *
  * operation = {
  *   operator: 'aggregate',
  *   operands: {
@@ -37,13 +37,13 @@
  *     'groups': [<group>, ...],
  *   }
  * }
- * 
+ *
  * aggregation = {
  *   agg_type: <string>,
  *   agg_on: <cpf>,
  *   alias: <string>
  * }
- * 
+ *
  * group = {
  *   field: <cpf>,
  *   alias: <string>
@@ -224,7 +224,7 @@ qb.directive('querybuilder', function () {
       }
     };
   }];
-  
+
   return {
     restrict: 'E',
     templateUrl: '/static/app/board/querybuilder.html',
@@ -276,13 +276,13 @@ qb.directive('step', function ($http, $compile) {
     if ($scope.step.operation) {
       // Keep track of all new schema properties created during this step
       $scope.step.fields = [];
-   
+
       // Make the input schema available to children who won't necessarily have
       // the correct $index
       $scope.schemaIndex = $scope.$index;
 
       // Initialize the output schema
-      $scope.schemas[$scope.$index + 1] = {}; 
+      $scope.schemas[$scope.$index + 1] = {};
 
       // Changes to schemaIn require an update to the output schema in index+1
       $scope.$watch(function () {
@@ -331,7 +331,7 @@ qb.directive('step', function ($http, $compile) {
         }
         $scope.schemas[$scope.$index + 1] = schemaOut;
       };
-      
+
       $scope.updateSchema = _.debounce(function () {
         /*
          * Select schema transform type based on the type of operation being
@@ -444,7 +444,7 @@ function (findObjectInListBasedOnKey, makeComplaint, revokeComplaint,
         scope.cpf.value = model.constant_value;
       }
     }
-    
+
     if (attrs['optional'] === undefined || attrs['optional'] == 'false') {
       ngModel.$parsers.unshift(function (viewValue) {
         switch (viewValue.cpf_type) {
@@ -467,22 +467,12 @@ function (findObjectInListBasedOnKey, makeComplaint, revokeComplaint,
             }
             break;
           case 'constant':
-            if (!viewValue.constant_value) {
-              if (!ngModel.$error['complete']) {
-                makeComplaint(scope.panel.cache.query_builder.validation,
+              // Allow undefined constant values to pass validation; will be
+              // processed as empty string
+              revokeComplaint(scope.panel.cache.query_builder.validation,
                               EMPTY_COMPLAINT);
-              }
-              ngModel.$setValidity('complete', false);
-              return undefined;
-            }
-            else {
-              if (ngModel.$error['complete']) {
-                revokeComplaint(scope.panel.cache.query_builder.validation,
-                                EMPTY_COMPLAINT);
-              }
               ngModel.$setValidity('complete', true);
               return viewValue;
-            }
             break;
           case 'function':
             if (ngModel.$error['complete']) {
@@ -608,6 +598,7 @@ function (findObjectInListBasedOnKey, makeComplaint, revokeComplaint,
       {name: 'Function', type: 'function'}
     ];
     $scope.cpf.type = $scope.types[0];
+    $scope.cpf.value = '';
     $scope.cpf.args = [];
   }];
 
@@ -726,7 +717,7 @@ function (posInt, nonEmpty, revokeComplaint,
    *
    * :param placeholder: (optional) Placeholder text for <input>
    * :param type: (optional) Declare type `posInt` for positive integer
-   * validation 
+   * validation
    * :param altersSchema: (optional) Indicates that this value is creating a
    * new property on the schema
    * :param optional: (optional) Indicates that this field is not required to
@@ -740,7 +731,7 @@ function (posInt, nonEmpty, revokeComplaint,
   // Behaves statically because a directive's factory function is invoked only
   // once, when the compiler matches the directive for the first time.
   var id = 0;
-  
+
   var linker = function (scope, element, attrs, ngModel) {
     if (attrs['placeholder']) {
       $(element).find('input').attr('placeholder', attrs['placeholder']);
@@ -756,7 +747,7 @@ function (posInt, nonEmpty, revokeComplaint,
         else {
           ngModel.$setViewValue(scope.val);
         }
- 
+
         // Get unique ID from incrementing static `id`
         var uid = id++;
         scope.$watch('val', function () {
@@ -770,10 +761,10 @@ function (posInt, nonEmpty, revokeComplaint,
       if (attrs['type'] == 'posInt') {
         ngModel.$parsers.unshift(function (viewValue) {
           return posInt(ngModel, scope.panel.cache.query_builder.validation,
-                        viewValue); 
+                        viewValue);
         });
       }
-      
+
       if (attrs['optional'] === undefined || attrs['optional'] == 'false') {
         ngModel.$parsers.unshift(function (viewValue) {
           return nonEmpty(ngModel, scope.panel.cache.query_builder.validation,
@@ -798,7 +789,7 @@ function (posInt, nonEmpty, revokeComplaint,
       });
     }
   };
- 
+
   return {
     restrict: "E",
     templateUrl: '/static/app/board/inputs/input.html',
@@ -817,7 +808,7 @@ qb.directive('direction', function () {
       {name: 'Ascending', type: 'asc'},
       {name: 'Descending', type: 'desc'}
     ];
-    
+
     ngModel.$render = function () {
       if (ngModel.$viewValue) {
         scope.direction = ngModel.$viewValue;
