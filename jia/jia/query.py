@@ -118,4 +118,7 @@ def create_metis_query_plan(query, start_time, end_time):
     operands = operation['operands']
     query_plan = operators[operator](query_plan, operands)
 
-  return json.dumps({'plan': query_plan.to_dict()})
+  if not isinstance(query_plan, dict):
+    query_plan = query_plan.to_dict()
+
+  return json.dumps({'plan': query_plan})

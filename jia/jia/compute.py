@@ -7,6 +7,7 @@ from flask import current_app
 from jia.common.time import datetime_to_epoch_time
 from jia.common.time import datetime_to_kronos_time
 from jia.common.time import epoch_time_to_kronos_time
+from jia.common.time import kronos_time_now
 from jia.common.time import kronos_time_to_datetime
 from jia.errors import PyCodeError
 from jia.query import create_metis_query_plan
@@ -91,8 +92,8 @@ class QueryCompute(object):
       self._app = current_app
       self._app.config  # The above line won't fail, but this one will
     except RuntimeError:
-      from scheduler import get_app 
-      self._app = get_app() 
+      from scheduler import get_app
+      self._app = get_app()
     self._query = query
     self._bucket_width = bucket_width
     self._untrusted_time = untrusted_time
@@ -139,7 +140,7 @@ class QueryCompute(object):
     # output to the user (only for caching)
     if timeframe['mode']['value'] == 'recent':
       # Set end_time equal to now and align to bucket width
-      end_time = datetime_to_kronos_time(datetime.datetime.now())
+      end_time = kronos_time_now()
       original_end_time = end_time
       duration = get_seconds(timeframe['value'], timeframe['scale']['name'])
       duration = epoch_time_to_kronos_time(duration)
@@ -201,15 +202,14 @@ class QueryCompute(object):
       'start_time': start_time,
       'end_time': end_time,
     }
-
     try:
       exec self._query in {}, locals_dict  # No globals.
     except:
       _, exception, tb = sys.exc_info()
       raise PyCodeError(exception, traceback.format_tb(tb))
 
-    events = sorted(locals_dict.get('events', []),
-                    key=lambda event: event['@time'])
+    # Retrieve the `events` variable as computed by the pycode.
+    events = locals_dict.get('events', [])
 
     return events
 

@@ -23,6 +23,7 @@ locally:
 git clone https://github.com/Locu/chronology.git
 cd chronology/kronos
 sudo make installdeps
+sudo pip install -r requirements.txt  # no sudo if you are in a virtualenv!!
 python runserver.py --port 8151 --config settings.py.template --debug
 ```
 
@@ -61,7 +62,7 @@ Configure your settings in `/etc/kronos/settings.py` and
 `/etc/kronos/uwsgi.ini`. Logs can be found in `/var/log/kronos`.
 When everything is configured to your liking, run
 ```
-sudo /etc/init.d/kronos start
+sudo /etc/init.d/kronosd start
 ```
 You can also call `stop`, `restart`, or `force-reload` on that command.
 
@@ -400,6 +401,26 @@ Here are what the parameters above mean:
 
   * `rollover_check_period_seconds` is the interval after which a Kronos
     instance checks to see if the index needs to be rolled over.
+
+### SQLite
+
+The SQLite implementation is intended for easy initial deployment and testing,
+but is not suitable for production. The implementation stores all events in a
+single table with various indices to speed access. Here is a sample configuration:
+
+```python
+storage = {
+  'sqlite': {
+    'backend': 'sqlite.SqliteStorage',
+    'sqlite_database_path': '/tmp/kronos.sqlite',
+  }
+}
+```
+
+There is only one option for the SQLite backend: the path to the database file.
+
+  * `sqlite_database_path` The path to the database storing the events. The
+    database will get created if it is missing.
 
 ### S3
 

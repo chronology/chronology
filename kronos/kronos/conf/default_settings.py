@@ -28,11 +28,15 @@ serving_mode = ServingMode.ALL
 # Backend storage engine configurations.  Below, 'memory' is a name we
 # assign to an `InMemoryStorage` engine that we'll reference later in
 # the configuration.  Check out other backend configurations for
-# storage backends like cassandra (tests/conf/cassandra.py).
+# storage backends like cassandra or elasticsearch (tests/conf/default_settings.py).
 storage = {
   'memory': {
     'backend': 'kronos.storage.memory.InMemoryStorage',
     'max_items': 100000,
+  },
+  'sqlite': {
+    'backend': 'sqlite.SqliteStorage',
+    'sqlite_database_path': '/tmp/kronos.sqlite',
   },
 }
 

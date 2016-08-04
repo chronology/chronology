@@ -1,3 +1,5 @@
+from gevent import monkey; monkey.patch_all()
+
 import os
 
 VERSION = (0, 1, 'alpha')

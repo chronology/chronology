@@ -1,4 +1,5 @@
 import re
+import os
 
 from uuid import getnode
 
@@ -8,11 +9,7 @@ debug = True
 profile = False
 serving_mode = ServingMode.ALL
 
-storage = {
-  'memory': {
-    'backend': 'kronos.storage.memory.InMemoryStorage',
-    'max_items': 50000
-  },
+storage_backends_with_external_dependencies = {
   'cassandra': {
     'backend': 'kronos.storage.cassandra.CassandraStorage',
     'hosts': ['127.0.0.1'],
@@ -36,6 +33,20 @@ storage = {
     'rollover_check_period_seconds': 2
   }
 }
+
+storage = {
+  'memory': {
+    'backend': 'kronos.storage.memory.InMemoryStorage',
+    'max_items': 50000
+  },
+  'sqlite': {
+    'backend': 'kronos.storage.sqlite.SqliteStorage',
+    'sqlite_database_path': '/tmp/kronos.sqlite'
+  }
+}
+
+if not os.environ.get('DISABLE_KRONOS_BACKENDS_WITH_DEPENDENCIES'):
+  storage.update(storage_backends_with_external_dependencies)
 
 node = {
   'id': hex(getnode()),

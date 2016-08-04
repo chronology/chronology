@@ -27,9 +27,11 @@ TESTS = {
   'cassandra': ('tests/storage/cassandra', ('cassandra', )),
   'common': ('tests/common', ('memory',
                               'cassandra',
-                              'elasticsearch',)),
+                              'elasticsearch',
+                              'sqlite')),
   'conf': ('tests/conf', ('memory', )),
   'elasticsearch': ('tests/storage/elasticsearch', ('elasticsearch', )),
+  'sqlite': ('tests/storage/sqlite', ('sqlite', )),
 }
 
 

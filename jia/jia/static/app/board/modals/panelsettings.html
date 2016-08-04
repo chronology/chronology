@@ -61,72 +61,14 @@
       <tab-heading>
         <i class="ti-filter"></i> Query
       </tab-heading>
-      <div class="code-controls query-builder">
-        <div ng-if="showCodeToggle" class="code-toggle">
-          <label>
-            <input type="checkbox"
-                   ng-model="panel.cache.query_builder.code">
-            Pycode query
-          </label>
-        </div>
-        <div class="row">
-          <div class="stream col-xs-12"
-               ng-class="{'vqb-invalid': !panel.data_source.query.stream &&
-                                         panel.cache.hasBeenRun}">
-            <ui-select ng-model="panel.data_source.query.stream" theme="bootstrap">
-              <ui-select-match placeholder="Stream">
-                {{ $select.selected }}
-                <span class="input-fade"></span> 
-              </ui-select-match>
-              <ui-select-choices repeat="stream in streams | filter: $select.search">
-                <div ng-bind-html="stream | highlight: $select.search"></div>
-              </ui-select-choices>
-            </ui-select>
-          </div>
-        </div>
-        <div class="timeframe row">
-          <div class="col-xs-12 col-sm-4">
-            <selecter model="panel.data_source.timeframe.mode"
-                      options="timeframeModes">
-            </selecter>
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <input type="number" class="form-control"
-                   ng-model="panel.data_source.timeframe.value"
-                   ng-if="panel.data_source.timeframe.mode.value == 'recent'">
-          </div>
-          <div class="col-xs-12 col-sm-4">
-            <selecter model="panel.data_source.timeframe.scale"
-                      options="timeScales"
-                      ng-if="panel.data_source.timeframe.mode.value == 'recent'">
-            </selecter>
-          </div>
-          <div class="dropdown dtp-container col-xs-4"
-               ng-if="panel.data_source.timeframe.mode.value == 'range'">
-            <a class="dropdown-toggle" id="dt_from" role="button">
-              <input type="text" class="form-control"
-                     ng-model="panel.data_source.timeframe.from">
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <datetimepicker ng-model="panel.data_source.timeframe.from"
-                              datetimepicker-config="{ dropdownSelector: '#dt_from' }">
-              </datetimepicker>
-            </ul>
-          </div>
-          <div class="dropdown dtp-container col-xs-4"
-               ng-if="panel.data_source.timeframe.mode.value == 'range'">
-            <a class="dropdown-toggle" id="dt_to" role="button"> 
-              <input type="text" class="form-control"
-                     ng-model="panel.data_source.timeframe.to">
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <datetimepicker ng-model="panel.data_source.timeframe.to"
-                              datetimepicker-config="{ dropdownSelector: '#dt_to' }">
-              </datetimepicker>
-            </ul>
-          </div>
-        </div>
+      <div ng-if="showCodeToggle" class="code-toggle">
+        <label>
+          <input type="checkbox"
+                 ng-model="panel.cache.query_builder.code">
+          Pycode query
+        </label>
       </div>
+      <div class="code-controls query-builder" ng-include="dataSource"></div>
 
       <querybuilder ng-if="panel.data_source.source_type == 'querybuilder'">
       </querybuilder>

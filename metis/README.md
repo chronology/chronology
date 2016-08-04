@@ -28,6 +28,7 @@ locally:
 git clone https://github.com/Locu/chronology.git
 cd chronology/metis
 make installdeps
+sudo pip install -r requirements.txt  # no pip if using a virtualenv!
 python runserver.py --port 8152 --config settings.py.template --debug
 ```
 
@@ -89,9 +90,9 @@ from metis.core.query.aggregate import Count
 from metis.core.query.aggregate import GroupBy
 from metis.core.query.aggregate import Sum
 from metis.core.query.kronos.source import KronosSource
-from metis.core.query.transform import Aggregate
-from metis.core.query.transform import Limit
-from metis.core.query.transform import OrderBy
+from metis.core.query.operator import Aggregate
+from metis.core.query.operator import Limit
+from metis.core.query.operator import OrderBy
 from metis.core.query.value import Constant
 from metis.core.query.value import DateTrunc
 from metis.core.query.value import Property

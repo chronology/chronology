@@ -71,6 +71,7 @@ function ($scope, $http, $location, $timeout, $injector, $routeParams,
   // out of @usmanm's code in the Angular rewrite.
   $scope.boardId = $routeParams.boardId;
   $scope.showCodeToggle = JIA_ALLOW_PYCODE;
+  $scope.dataSource = '/static/app/board/sources/' + JIA_DATA_SOURCE + '.html';
 
   $scope.editorOptions = {
     lineWrapping: true,
@@ -165,7 +166,7 @@ function ($scope, $http, $location, $timeout, $injector, $routeParams,
   $scope.updateSchema = function (panel) {
     $http.get('/streams/' + panel.data_source.query.stream)
       .success(function (data, status, headers, config) {
-        panel.cache.streamProperties = data.schema.required;
+        panel.cache.streamProperties = Object.keys(data.properties);
       }
     );
   }
